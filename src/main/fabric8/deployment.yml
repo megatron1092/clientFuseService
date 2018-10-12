@@ -1,0 +1,21 @@
+spec:
+  template:
+    spec:
+      containers:
+        - 
+          resources:
+            requests:
+              cpu: "0.2"
+#              memory: 256Mi
+            limits:
+              cpu: "1.0"
+#              memory: 256Mi
+          env:
+          - name: SPRING_APPLICATION_JSON
+            value: '{"server":{"tomcat":{"max-threads":1}}}'
+          - name: SERVICE_URL
+            value: "/api/v1/get"
+          - name: SERVICE_HOST
+            value: "http://camel-ose-springboot-xml-testfuseproject.192.168.99.100.nip.io/"
+          - name: SERVICE_PORT
+            value: "80"
