@@ -25,7 +25,7 @@
         <route>
             <from uri="jms:queue:responses?connectionFactory=#amqConnectionFactory"/>
             <to uri="log:jms"/>
-            <to uri="directAggregator"/>
+            <to uri="direct:aggregate"/>
         </route>
         <route id="directAggregator">
             <from uri="direct:aggregate"/>
