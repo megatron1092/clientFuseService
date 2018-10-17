@@ -9,29 +9,27 @@
         <property name="userName" value="developer"/>
         <property name="password" value="developer"/>
     </bean>
-    <bean id="serviceProcessor" class="ru.gazprom_neft.clientfuseservice.processors.RequestProcessor"/>
+    <bean id="requestProcessor" class="ru.gazprom_neft.clientfuseservice.processors.RequestProcessor"/>
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route id="amq-request">
             <from uri="netty4-http:http://0.0.0.0:8080{{service.url}}?matchOnUriPrefix=true"/>
-            <process ref="serviceProcessor"/>
+            <process ref="requestProcessor"/>
             <to uri="jms:queue:requests?connectionFactory=#amqConnectionFactory"/>
         </route>
         <route id="amq-response-http">
             <from uri="netty4-http:http://0.0.0.0:8080/api/v1/result?matchOnUriPrefix=true"/>
-            <to uri="log:http"/>
-            <to uri="direct:aggregate"/>
+            <setProperty propertyName="httpPath">
+                <constant>${in.header.CamelHttpPath}</constant>
+            </setProperty>
+            <to uri="direct:match"/>
+            <to uri="log:response"/>
+            <!--<to uri="log:http"/>
+            <to uri="direct:aggregate"/>-->
         </route>
-        <route>
-            <from uri="jms:queue:responses?connectionFactory=#amqConnectionFactory"/>
-            <to uri="log:jms"/>
-            <to uri="direct:aggregate"/>
-        </route>
-        <route id="directAggregator">
-            <from uri="direct:aggregate"/>
-            <filter>
-                <header>JMSCorrelationID</header>
-            </filter>
+        <route id="directMatch">
+            <from uri="direct:match"/>
+            <from uri="jms:queue:responses?connectionFactory=#amqConnectionFactory&amp;JMSCorrelationID=${httpPath}"/>
             <to uri="log:aggregation"/>
         </route>
     </camelContext>
