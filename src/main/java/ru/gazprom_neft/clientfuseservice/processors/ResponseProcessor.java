@@ -8,7 +8,7 @@ import org.apache.camel.Processor;
 
 import java.util.UUID;
 
-public class RequestProcessor implements Processor {
+public class ResponseProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         String path = exchange.getIn().getHeader("CamelHttpPath", String.class);
