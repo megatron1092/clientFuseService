@@ -29,7 +29,7 @@
         </route>
         <route id="directMatch">
             <from uri="direct:match"/>
-            <from uri="jms:queue:responses?connectionFactory=#amqConnectionFactory&amp;JMSCorrelationID=${httpPath}"/>
+            <from uri="jms:queue:responses?connectionFactory=#amqConnectionFactory&amp;JMSCorrelationID=${in.header.CamelHttpPath}"/>
             <to uri="log:aggregation"/>
         </route>
     </camelContext>
