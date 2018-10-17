@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean id="amqConnectionFactory"
+          class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://0.0.0.0:61616"/>
+        <property name="userName" value="developer"/>
+        <property name="password" value="developer"/>
+    </bean>
+
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-        <route id="rest-route">
-            <from uri="netty4-http:http://0.0.0.0:8080{{service.url}}?matchOnUriPrefix=true"/>
-            <log id="route-log" message=">>> ${in.header.CamelHttpPath}"/>
-            <to uri="netty4-http:{{service.host}}:{{service.port}}{{service.url}}"/>
+        <route id="amq-route">
+            <from uri="timer:fire?period=10000"/>
+            <setBody>
+                <constant>Hello chapter5h</constant>
+            </setBody>
+                <to uri="jms:queue:input?connectionFactory=#amqConnectionFactory"/>
         </route>
     </camelContext>
 </beans>

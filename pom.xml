@@ -45,6 +45,15 @@
       <artifactId>camel-netty4-http</artifactId>
       <version>2.21.0.fuse-710018-redhat-00001</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jms</artifactId>
+      <version>2.21.0.fuse-710018-redhat-00001</version>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>
