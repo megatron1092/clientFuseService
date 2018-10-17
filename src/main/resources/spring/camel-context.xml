@@ -9,10 +9,12 @@
         <property name="userName" value="developer"/>
         <property name="password" value="developer"/>
     </bean>
+    <bean id="serviceProcessor" class="ru.gazprom_neft.clientfuseservice.processors.RequestProcessor"/>
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route id="amq-request">
             <from uri="netty4-http:http://0.0.0.0:8080{{service.url}}?matchOnUriPrefix=true"/>
+            <process ref="serviceProcessor"/>
             <to uri="jms:queue:requests?connectionFactory=#amqConnectionFactory"/>
         </route>
     </camelContext>
