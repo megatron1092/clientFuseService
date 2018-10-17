@@ -5,18 +5,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
     <bean id="amqConnectionFactory"
           class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://${amq.host}:61616"/>
+        <property name="brokerURL" value="${amq.protocol}://${amq.host}:${amq.port}"/>
         <property name="userName" value="developer"/>
         <property name="password" value="developer"/>
     </bean>
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-        <route id="amq-route">
-            <from uri="timer:fire?period=10000"/>
-            <setBody>
-                <constant>Hello chapter5h</constant>
-            </setBody>
-                <to uri="jms:queue:input?connectionFactory=#amqConnectionFactory"/>
+        <route id="amq-request">
+            <from uri="netty4-http:http://0.0.0.0:8080{{service.url}}?matchOnUriPrefix=true"/>
+            <to uri="jms:queue:requests?connectionFactory=#amqConnectionFactory"/>
         </route>
     </camelContext>
 </beans>

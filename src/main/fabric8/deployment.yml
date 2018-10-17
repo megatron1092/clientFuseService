@@ -21,3 +21,7 @@ spec:
             value: "80"
           - name: AMQ_HOST
             value: "localhost"
+          - name: AMQ_PORT
+            value: "61616"
+          - name: AMQ_PROTOCOL
+            value: "tcp"
