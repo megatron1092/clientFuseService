@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
     <bean id="amqConnectionFactory"
           class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://0.0.0.0:61616"/>
+        <property name="brokerURL" value="tcp://{{amq.host}}:61616"/>
         <property name="userName" value="developer"/>
         <property name="password" value="developer"/>
     </bean>

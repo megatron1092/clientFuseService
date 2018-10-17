@@ -19,3 +19,5 @@ spec:
             value: "http://camel-ose-springboot-xml-testfuseproject.192.168.99.100.nip.io/"
           - name: SERVICE_PORT
             value: "80"
+          - name: AMQ_HOST
+            value: "localhost"
