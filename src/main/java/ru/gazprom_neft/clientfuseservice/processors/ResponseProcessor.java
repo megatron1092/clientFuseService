@@ -37,7 +37,7 @@ public class ResponseProcessor implements Processor {
             connection.start();
             ActiveMQMessage message = (ActiveMQMessage) receiver.receive(500);
             if (message != null) {
-                String body = Arrays.toString(message.getContent().getData());
+                String body = new String(message.getContent().getData());
                 LOGGER.debug(String.format("Got message with id = %s and body = %s", message.getJMSMessageID(), body));
                 exchange.getOut().setBody(body);
             } else {
