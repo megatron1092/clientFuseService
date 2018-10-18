@@ -13,10 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.jms.QueueConnection;
-import javax.jms.QueueReceiver;
-import javax.jms.QueueSession;
-import javax.jms.Session;
+import javax.jms.*;
 import java.util.Arrays;
 
 @Component
@@ -34,12 +31,17 @@ public class ResponseProcessor implements Processor {
         QueueConnection connection = amqConnectionFactory.createQueueConnection();
         QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
         QueueReceiver receiver = session.createReceiver(new ActiveMQQueue("responses"), "JMSCorrelationID='" + path + "'");
-        connection.start();
-        ActiveMQMessage message = (ActiveMQMessage) receiver.receive();
-        String body = Arrays.toString(message.getContent().getData());
-        LOGGER.debug(String.format("Got message with id = %s and body = %s", message.getJMSMessageID(), body));
         exchange.getOut().setHeader("JMSCorrelationID", path);
-        exchange.getOut().setBody(body);
+        connection.start();
+        try{
+            ActiveMQMessage message = (ActiveMQMessage) receiver.receive();
+            String body = Arrays.toString(message.getContent().getData());
+            LOGGER.debug(String.format("Got message with id = %s and body = %s", message.getJMSMessageID(), body));
+            exchange.getOut().setBody(body);
+        } catch (JMSException ex) {
+            LOGGER.error("Error while obtaining message: " + ex.getMessage());
+            exchange.getOut().setBody("Error while obtaining message");
+        }
         connection.stop();
     }
 
