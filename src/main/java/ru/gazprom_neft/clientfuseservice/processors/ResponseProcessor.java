@@ -28,12 +28,13 @@ public class ResponseProcessor implements Processor {
         LOGGER.debug("Entered responseProcessor");
         String path = (exchange.getIn().getHeader("CamelHttpPath", String.class)).replace("/", "");
         LOGGER.debug("Got correlationId: " + path);
-        QueueConnection connection = amqConnectionFactory.createQueueConnection();
-        QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        QueueReceiver receiver = session.createReceiver(new ActiveMQQueue("responses"), "JMSCorrelationID='" + path + "'");
+
         exchange.getOut().setHeader("JMSCorrelationID", path);
-        connection.start();
-        try {
+
+        try (QueueConnection connection = amqConnectionFactory.createQueueConnection();
+             QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+             QueueReceiver receiver = session.createReceiver(new ActiveMQQueue("responses"), "JMSCorrelationID='" + path + "'");) {
+            connection.start();
             ActiveMQMessage message = (ActiveMQMessage) receiver.receive(500);
             if (message != null) {
                 String body = Arrays.toString(message.getContent().getData());
@@ -47,7 +48,6 @@ public class ResponseProcessor implements Processor {
             LOGGER.error("Error while obtaining message: " + ex.getMessage());
             exchange.getOut().setBody("Error while obtaining message");
         }
-        connection.stop();
     }
 
 }
