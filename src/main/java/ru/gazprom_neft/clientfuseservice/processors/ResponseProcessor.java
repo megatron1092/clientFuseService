@@ -27,7 +27,7 @@ public class ResponseProcessor implements Processor {
     public void process(Exchange exchange) throws Exception {
         LOGGER.debug("Entered responseProcessor");
         System.out.println("Entered responseProcessor");
-        String path = (exchange.getIn().getHeader("CamelHttpPath", String.class)).replace("\"","");
+        String path = (exchange.getIn().getHeader("CamelHttpPath", String.class)).replace("/", "");
         LOGGER.debug("Got correlationId: " + path);
         System.out.println("Got correlationId: " + path);
         QueueConnection connection = amqConnectionFactory.createQueueConnection();
@@ -36,13 +36,17 @@ public class ResponseProcessor implements Processor {
         exchange.getOut().setHeader("JMSCorrelationID", path);
         connection.start();
         System.out.println("Opened connection");
-        try{
+        try {
             ActiveMQMessage message = (ActiveMQMessage) receiver.receive(200);
-            System.out.println("message = "+message);
-            String body = Arrays.toString(message.getContent().getData());
-            System.out.println("message body: "+ body);
-            LOGGER.debug(String.format("Got message with id = %s and body = %s", message.getJMSMessageID(), body));
-            exchange.getOut().setBody(body);
+            if (message != null) {
+                System.out.println("message = " + message);
+                String body = Arrays.toString(message.getContent().getData());
+                System.out.println("message body: " + body);
+                LOGGER.debug(String.format("Got message with id = %s and body = %s", message.getJMSMessageID(), body));
+                exchange.getOut().setBody(body);
+            } else {
+                LOGGER.error(String.format("Can't get message with corellationId %s within timeout", path));
+            }
         } catch (JMSException ex) {
             LOGGER.error("Error while obtaining message: " + ex.getMessage());
             System.out.println("Error while obtaining message: " + ex.getMessage());
