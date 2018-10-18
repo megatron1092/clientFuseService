@@ -30,6 +30,7 @@ public class ResponseProcessor implements Processor {
         LOGGER.debug("Got correlationId: " + path);
 
         exchange.getOut().setHeader("JMSCorrelationID", path);
+        exchange.getOut().setHeader("Content-Type", "text/plain");
 
         try (QueueConnection connection = amqConnectionFactory.createQueueConnection();
              QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
