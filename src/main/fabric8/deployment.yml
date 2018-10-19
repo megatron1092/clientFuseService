@@ -3,8 +3,7 @@ spec:
     spec:
       containers:
         -
-          args:
-            - '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+
           resources:
             requests:
               cpu: "0.2"
@@ -18,12 +17,14 @@ spec:
           - name: SERVICE_URL
             value: "/api/v1/get"
           - name: SERVICE_HOST
-            value: "http://camel-ose-springboot-xml-testfuseproject.192.168.99.100.nip.io/"
+            value: "http://camel-ose-springboot-xml-testfuseproject.192.168.99.100.nip.io"
           - name: SERVICE_PORT
             value: "80"
           - name: AMQ_HOST
-            value: "localhost"
+            value: "broker-amq-mesh.amq.svc"
           - name: AMQ_PORT
             value: "61616"
           - name: AMQ_PROTOCOL
             value: "tcp"
+          - name: DEBUG
+            value: false

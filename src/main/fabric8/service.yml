@@ -2,5 +2,3 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
-    - port: 5005
-      targetPort: 5005
