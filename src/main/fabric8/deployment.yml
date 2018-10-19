@@ -2,7 +2,9 @@ spec:
   template:
     spec:
       containers:
-        - 
+        -
+          args:
+            - '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
           resources:
             requests:
               cpu: "0.2"
