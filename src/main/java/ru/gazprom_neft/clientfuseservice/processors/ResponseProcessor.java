@@ -35,7 +35,6 @@ public class ResponseProcessor implements Processor {
         try (QueueConnection connection = amqConnectionFactory.createQueueConnection();
              QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
              QueueReceiver receiver = session.createReceiver(new ActiveMQQueue("responses"), "JMSCorrelationID='" + path + "'");) {
-            connection.start();
             ActiveMQMessage message = (ActiveMQMessage) receiver.receive(500);
             if (message != null) {
                 String body = new String(message.getContent().getData());

@@ -10,8 +10,6 @@ spec:
             limits:
               cpu: "1.0"
 #              memory: 256Mi
-          args:
-          - '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
           env:
           - name: SPRING_APPLICATION_JSON
             value: '{"server":{"tomcat":{"max-threads":1}}}'
