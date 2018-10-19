@@ -2,6 +2,3 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
-    - containerPort: 5005
-      hostPort: 5005
-      name: "debug"

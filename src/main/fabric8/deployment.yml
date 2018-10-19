@@ -25,3 +25,7 @@ spec:
             value: "61616"
           - name: AMQ_PROTOCOL
             value: "tcp"
+          ports:
+          - containerPort: 5005
+            hostPort: 5005
+            name: "debug"
