@@ -6,8 +6,8 @@
     <bean id="amqConnectionFactory"
           class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="${amq.protocol}://${amq.host}:${amq.port}"/>
-        <property name="userName" value="developer"/>
-        <property name="password" value="developer"/>
+        <property name="userName" value="${amq.user}"/>
+        <property name="password" value="${amq.password}"/>
     </bean>
     <bean id="requestProcessor" class="ru.gazprom_neft.clientfuseservice.processors.RequestProcessor"/>
     <bean id="responseProcessor" class="ru.gazprom_neft.clientfuseservice.processors.ResponseProcessor"/>

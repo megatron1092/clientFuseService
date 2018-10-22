@@ -28,3 +28,7 @@ spec:
             value: "tcp"
           - name: DEBUG
             value: false
+          - name: AMQ_USER
+            value: "developer"
+          - name: AMQ_PASSWORD
+            value: "developer"
