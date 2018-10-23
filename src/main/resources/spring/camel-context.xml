@@ -24,7 +24,7 @@
                 <simple>${header.CamelHttpPath}</simple>
             </setHeader>
             <to uri="infinispan?cacheContainer=#cacheContainer&amp;command=GET"/>
-            <log message="got from infinispan : ${header.JMSCorrelationID} and ${body}"/>
+            <log message="got from infinispan : ${header.CamelHttpPath}, ${header.JMSCorrelationID} and ${body}"/>
         </route>
     </camelContext>
 </beans>
