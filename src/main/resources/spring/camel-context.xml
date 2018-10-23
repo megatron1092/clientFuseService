@@ -11,6 +11,7 @@
     </bean>
     <bean id="requestProcessor" class="ru.gazprom_neft.clientfuseservice.processors.RequestProcessor"/>
     <bean id="responseProcessor" class="ru.gazprom_neft.clientfuseservice.processors.ResponseProcessor"/>
+    <bean id="pathConvertorProcessor" class="ru.gazprom_neft.clientfuseservice.processors.PathConvertorProcessor"/>
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route id="amq-request">
@@ -20,6 +21,7 @@
         </route>
         <route id="amq-response-http">
             <from uri="netty4-http:http://0.0.0.0:8080/api/v1/result?matchOnUriPrefix=true"/>
+            <process ref="pathConvertorProcessor"/>
             <setHeader headerName="CamelInfinispanKey">
                 <simple>${header.CamelHttpPath}</simple>
             </setHeader>
