@@ -45,5 +45,9 @@ Then create the quickstart template:
 
     oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/GA/quickstarts/spring-boot-camel-template.json
 
-Now when you use "Add to Project" button in the OpenShift console, you should see a template for this quickstart. 
+Now when you use "Add to Project" button in the OpenShift console, you should see a template for this quickstart.
+
+
+
+Howto use SSL with AMQ: https://access.redhat.com/documentation/en-us/red_hat_amq/7.1/pdf/deploying_amq_broker_on_openshift_container_platform/Red_Hat_AMQ-7.1-Deploying_AMQ_Broker_on_OpenShift_Container_Platform-en-US.pdf
 
