@@ -4,7 +4,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
     <bean id="amqConnectionFactory"
-          class="org.apache.activemq.ActiveMQConnectionFactory">
+          class="org.apache.activemq.ActiveMQSslConnectionFactory">
+        <property name="trustStore" value="C:\Users\serzh\1\client.ts" />
+        <property name="trustStorePassword" value="developer" />
+        <property name="keyStore" value="C:\Users\serzh\1\broker.ks" />
+        <property name="keyStorePassword" value="developer" />
         <property name="brokerURL" value="${amq.protocol}://${amq.host}:${amq.port}"/>
         <property name="userName" value="${amq.user}"/>
         <property name="password" value="${amq.password}"/>
