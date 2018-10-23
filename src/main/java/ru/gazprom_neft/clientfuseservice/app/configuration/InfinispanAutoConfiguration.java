@@ -1,4 +1,4 @@
-package ru.gazprom_neft.clientfuseservice.configuration;
+package ru.gazprom_neft.clientfuseservice.app.configuration;
 
 import org.infinispan.client.hotrod.ProtocolVersion;
 import org.infinispan.client.hotrod.RemoteCacheManager;
