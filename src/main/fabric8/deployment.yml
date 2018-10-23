@@ -32,3 +32,7 @@ spec:
             value: "developer"
           - name: AMQ_PASSWORD
             value: "developer"
+          - name: DATAGRID_HOST
+            value: "datagrid-app-hotrod.testfuse.svc"
+          - name: DATAGRID_PORT
+            value: "11333"
