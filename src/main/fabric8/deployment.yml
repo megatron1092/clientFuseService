@@ -17,11 +17,11 @@ spec:
           - name: SERVICE_URL
             value: "/api/v1/get"
           - name: SERVICE_HOST
-            value: "http://camel-ose-springboot-xml-testfuseproject.192.168.99.100.nip.io"
+            value: "http://testfuseproject-testfuse.192.168.99.100.nip.io"
           - name: SERVICE_PORT
             value: "80"
           - name: AMQ_HOST
-            value: "broker-amq-mesh.amq.svc"
+            value: "broker-amq-mesh.testfuse.svc"
           - name: AMQ_PORT
             value: "61616"
           - name: AMQ_PROTOCOL
