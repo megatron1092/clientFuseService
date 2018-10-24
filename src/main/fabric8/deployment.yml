@@ -21,11 +21,11 @@ spec:
           - name: SERVICE_PORT
             value: "80"
           - name: AMQ_HOST
-            value: "broker-amq-mesh.testfuse.svc"
+            value: "broker-amq-tcp-ssl-testfuse.192.168.99.100.nip.io"
           - name: AMQ_PORT
-            value: "61616"
+            value: "443"
           - name: AMQ_PROTOCOL
-            value: "tcp"
+            value: "ssl"
           - name: DEBUG
             value: false
           - name: AMQ_USER
