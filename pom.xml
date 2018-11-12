@@ -79,6 +79,14 @@
       <id>jboss-early-access-repository</id>
       <url>https://repository.jboss.org/nexus/content/groups/ea</url>
     </repository>
+    <repository>
+      <id>gpn-dmz-nexus</id>
+      <url>http://nexus-xpaas-images-tp.dmz-apps.demo.rht.ru/repository/maven-releases</url>
+    </repository>
+    <repository>
+      <id>demo-rht</id>
+      <url>www.demo.rht.ru/repos/maven/</url>
+    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
@@ -92,6 +100,14 @@
     <pluginRepository>
       <id>jboss-early-access-repository</id>
       <url>https://repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>gpn-dmz-nexus</id>
+      <url>http://nexus-xpaas-images-tp.dmz-apps.demo.rht.ru/repository/maven-releases</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>demo-rht</id>
+      <url>www.demo.rht.ru/repos/maven/</url>
     </pluginRepository>
   </pluginRepositories>
   <build>
