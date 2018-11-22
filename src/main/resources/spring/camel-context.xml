@@ -15,7 +15,7 @@
             <to uri="amqp:queue:requests"/>
         </route>
         <route id="amq-response-http">
-            <from uri="netty4-http:http://{{service.host}}:{{server.port}}/api/v1/result?matchOnUriPrefix=true"/>
+            <from uri="netty4-http:http://{{service.host}}:{{service.port}}/api/v1/result?matchOnUriPrefix=true"/>
             <process ref="pathConvertorProcessor"/>
             <setHeader headerName="CamelInfinispanCacheName">
                 <simple>datagrid</simple>
