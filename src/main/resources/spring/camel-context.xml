@@ -10,7 +10,7 @@
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route id="amq-request">
-            <from uri="netty4-http:http://{{service.host}}:{{server.port}}{{service.url}}?matchOnUriPrefix=true"/>
+            <from uri="netty4-http:http://{{service.host}}:{{service.port}}{{service.url}}?matchOnUriPrefix=true"/>
             <process ref="requestProcessor"/>
             <to uri="amqp:queue:requests"/>
         </route>
