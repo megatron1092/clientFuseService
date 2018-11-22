@@ -3,13 +3,13 @@ package ru.gazprom_neft.clientfuseservice.processors;// Created by IntelliJ IDEA
 // Date: 17.10.2018
 // Time: 14:23
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.activemq.command.ActiveMQTextMessage;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.qpid.jms.JmsConnectionFactory;
+import org.apache.qpid.jms.JmsQueue;
+import org.apache.qpid.jms.message.JmsTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ public class ResponseProcessor implements Processor {
     private static final Logger LOGGER = LogManager.getLogger(ResponseProcessor.class);
 
     @Autowired
-    ActiveMQConnectionFactory amqConnectionFactory;
+    JmsConnectionFactory jmsConnectionFactory;
 
     @Override
     public void process(Exchange exchange) throws Exception {
@@ -30,12 +30,13 @@ public class ResponseProcessor implements Processor {
 
         exchange.getOut().setHeader("JMSCorrelationID", path);
         exchange.getOut().setHeader("Content-Type", "text/plain");
-
-        try (QueueConnection connection = amqConnectionFactory.createQueueConnection();
-             QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-             QueueReceiver receiver = session.createReceiver(new ActiveMQQueue("responses"), "JMSCorrelationID='" + path + "'");) {
-            connection.start();
-            ActiveMQTextMessage message = (ActiveMQTextMessage) receiver.receive(500);
+        Connection connection = jmsConnectionFactory.createConnection();
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Destination queue = new JmsQueue("responses");
+        MessageConsumer consumer = session.createConsumer(queue);
+        connection.start();
+        try {
+            JmsTextMessage message = (JmsTextMessage) consumer.receive(500);
             if (message != null) {
                 String body = message.getText();
                 LOGGER.debug(String.format("Got message with id = %s and body = %s", message.getJMSMessageID(), body));
@@ -47,6 +48,11 @@ public class ResponseProcessor implements Processor {
         } catch (JMSException ex) {
             LOGGER.error("Error while obtaining message: " + ex.getMessage());
             exchange.getOut().setBody("Error while obtaining message");
+        }
+        finally {
+            connection.close();
+            session.close();
+            consumer.close();
         }
     }
 

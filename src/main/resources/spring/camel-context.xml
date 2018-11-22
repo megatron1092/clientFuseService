@@ -3,28 +3,19 @@
 
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
-    <bean id="amqConnectionFactory"
-          class="org.apache.activemq.ActiveMQSslConnectionFactory">
-        <property name="trustStore" value="classpath:ssl/client.ts" />
-        <property name="trustStorePassword" value="developer" />
-        <property name="keyStore" value="classpath:ssl/broker.ks" />
-        <property name="keyStorePassword" value="developer" />
-        <property name="brokerURL" value="${amq.protocol}://${amq.host}:${amq.port}"/>
-        <property name="userName" value="${amq.user}"/>
-        <property name="password" value="${amq.password}"/>
-    </bean>
+
     <bean id="requestProcessor" class="ru.gazprom_neft.clientfuseservice.processors.RequestProcessor"/>
     <bean id="responseProcessor" class="ru.gazprom_neft.clientfuseservice.processors.ResponseProcessor"/>
     <bean id="pathConvertorProcessor" class="ru.gazprom_neft.clientfuseservice.processors.PathConvertorProcessor"/>
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <route id="amq-request">
-            <from uri="netty4-http:http://0.0.0.0:8080{{service.url}}?matchOnUriPrefix=true"/>
+            <from uri="netty4-http:http://{{service.host}}:{{server.port}}{{service.url}}?matchOnUriPrefix=true"/>
             <process ref="requestProcessor"/>
-            <to uri="jms:queue:requests?connectionFactory=#amqConnectionFactory"/>
+            <to uri="amqp:queue:requests"/>
         </route>
         <route id="amq-response-http">
-            <from uri="netty4-http:http://0.0.0.0:8080/api/v1/result?matchOnUriPrefix=true"/>
+            <from uri="netty4-http:http://{{service.host}}:{{server.port}}/api/v1/result?matchOnUriPrefix=true"/>
             <process ref="pathConvertorProcessor"/>
             <setHeader headerName="CamelInfinispanCacheName">
                 <simple>datagrid</simple>

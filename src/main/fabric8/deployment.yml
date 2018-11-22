@@ -32,7 +32,17 @@ spec:
             value: "developer"
           - name: AMQ_PASSWORD
             value: "developer"
+          - name: QUEUE_PROCCESS_DELAY
+            value: 1000
           - name: DATAGRID_HOST
-            value: "datagrid-app-hotrod.testfuse.svc"
+            value: "datagrid-app-hotrod.datagrid.svc"
           - name: DATAGRID_PORT
             value: "11333"
+          - name: AMQP_REMOTE_URI
+            value: ""
+          - name: DATAGRID_SSL_ENABLED
+            value: "true"
+          - name: DATAGRID_SSL_TS_PASSWORD
+            value: ""
+          - name: DATAGRID_SSL_TS_PATH
+            value: "/var/run/secrets/amq/keystores/client.ts"

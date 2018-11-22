@@ -11,7 +11,6 @@ import org.springframework.core.env.Environment;
 
 /**
  * Настройка DataGrid.
- *
  */
 @Configuration
 @ConfigurationProperties(prefix = "infinispan")
@@ -19,10 +18,14 @@ public class InfinispanAutoConfiguration {
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     public BasicCacheContainer cacheContainer(Environment environment) {
-        ConfigurationBuilder builder = new ConfigurationBuilder()
-                .version(ProtocolVersion.PROTOCOL_VERSION_26)
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.version(ProtocolVersion.PROTOCOL_VERSION_26)
                 .addServers(environment.getProperty("datagrid.host") + ":"
-                        + environment.getProperty("datagrid.port"));
+                        + environment.getProperty("datagrid.port"))
+                .security().ssl()
+                .enabled(environment.getProperty("datagrid.ssl.enabled", Boolean.class))
+                .trustStoreFileName(environment.getProperty("datagrid.ssl.trust-store"))
+                .trustStorePassword(environment.getProperty("datagrid.ssl.trust-store-password").toCharArray());
 
 
         return new RemoteCacheManager(builder.create(), false);
